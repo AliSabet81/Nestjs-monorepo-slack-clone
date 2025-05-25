@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  slack_clone_postgres: # Needs updating
+    image: postgres:alpine
+    container_name: slack_clone_postgres # Needs updating
+    restart: always
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    ports:
+      - '5432:5432'
+    volumes:
+      - slack_clone_postgres_data:/var/lib/postgresql/data # Needs updating
+
+  slack_clone_redis: # Needs updating
+    image: redis:alpine
+    container_name: slack_clone_redis # Needs updating
+    ports:
+      - '6379:6379'
+    volumes:
+      - slack_clone_redis_data:/data # Needs updating
+
+networks:
+  default:
+    name: slack_clone # Needs updating
+
+volumes:
+  slack_clone_postgres_data: # Needs updating
+  slack_clone_redis_data: # Needs updating
