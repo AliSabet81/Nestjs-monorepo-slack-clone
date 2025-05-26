@@ -4,7 +4,17 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "pnpm run --parallel dev",
+    "build:backend": "pnpm --filter backend build",
+    "build:web": "pnpm --filter web build",
+    "start:backend": "pnpm --filter backend start:prod",
+    "start:web": "pnpm --filter web start",
+    "test": "pnpm run --parallel test",
+    "test:e2e": "pnpm run --parallel test:e2e",
+    "db:migrate:dev": "pnpm --filter backend db:migrate:dev",
+    "db:migrate:prod": "pnpm --filter backend db:migrate:prod",
+    "db:migrate:test": "pnpm --filter backend db:migrate:test",
+    "db:studio": "pnpm --filter backend db:studio"
   },
   "keywords": [],
   "author": "",
