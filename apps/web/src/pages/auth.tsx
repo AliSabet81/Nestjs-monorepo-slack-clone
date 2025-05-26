@@ -1,10 +1,15 @@
 import { useDispatch } from "react-redux";
 import { login } from "../store/auth";
+import { CredentialResponse, GoogleLogin } from "@react-oauth/google";
+import { useGoogleAuthMutation } from "../store/api";
 
 export default function Auth() {
   const dispatch = useDispatch();
-  const handleLogin = () => {
-    dispatch(login({ user: { id: 1, email: `tom@example.com`, name: `Tom` } }));
+  const [googleAuth, { isLoading }] = useGoogleAuthMutation();
+  const handleLogin = async (credentialResponse: CredentialResponse) => {
+    if (!credentialResponse.credential) return;
+    const user = await googleAuth(credentialResponse.credential).unwrap();
+    dispatch(login({ user }));
   };
 
   return (
@@ -25,17 +30,17 @@ export default function Auth() {
         </div>
       </div>
       <div className="lg:p-8">
-        <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
+        <div className="mx-auto flex w-full flex-col justify-center items-center space-y-6 sm:w-[350px]">
           <div className="flex flex-col space-y-2 text-center">
             <h1 className="text-2xl font-semibold tracking-tight">
               Authentication
             </h1>
-            <p
-              className="text-sm text-muted-foreground hover:cursor-pointer"
-              onClick={handleLogin}
-            >
-              Continue to your account
-            </p>
+            <GoogleLogin
+              onSuccess={handleLogin}
+              onError={() => {
+                console.log("Login Failed");
+              }}
+            />
           </div>
         </div>
       </div>
