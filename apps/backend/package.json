@@ -37,6 +37,8 @@
     "@nestjs/jwt": "^10.2.0",
     "@nestjs/mapped-types": "^2.1.0",
     "@nestjs/platform-express": "^11.0.1",
+    "@nestjs/platform-socket.io": "^10.3.8",
+    "@nestjs/websockets": "^10.3.8",
     "@prisma/client": "^6.8.2",
     "cache-manager": "^6.4.3",
     "cache-manager-redis-store": "^2.0.0",
@@ -49,6 +51,7 @@
     "prisma": "^6.8.2",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
+    "socket.io": "^4.7.5",
     "winston": "^3.17.0"
   },
   "devDependencies": {

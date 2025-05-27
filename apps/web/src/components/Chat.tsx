@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
+import { useSocket } from "../hooks/useSocket";
 
 export const Chat = ({ channelId }: { channelId: number }) => {
+  const { socket } = useSocket();
+
   const { data: channels } = useSelector((state: RootState) => state.channels);
   const channel = channels.find((channel) => channel.id === channelId);
   const { user } = useSelector((state: RootState) => state.auth);
@@ -28,7 +31,11 @@ export const Chat = ({ channelId }: { channelId: number }) => {
     if (!newMessage || !user) {
       throw new Error(`Unable to send message`);
     }
-
+    socket?.emit(`createMessage`, {
+      content: newMessage,
+      channelId,
+      userId: user.id,
+    });
     setNewMessage(``);
   };
   return (

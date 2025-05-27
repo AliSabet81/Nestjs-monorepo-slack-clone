@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../store";
-import { addChannel, setActiveChannel } from "../store/channels";
+import { setActiveChannel } from "../store/channels";
 import { logout } from "../store/auth";
 import { useLogoutMutation } from "../store/api";
 
@@ -19,7 +19,6 @@ export const SideNav = () => {
     if (!newChannel) {
       return;
     }
-    dispatch(addChannel({ name: newChannel }));
     setNewChannel(``);
   };
 
@@ -30,6 +29,7 @@ export const SideNav = () => {
   const handleLogout = async () => {
     await logoutAuth(undefined);
     dispatch(logout());
+    window.location.href = `/auth`;
   };
   return (
     <div className="h-screen flex flex-col bg-gray-100">
