@@ -17,7 +17,7 @@ export const useAuth = () => {
 
   useEffect(() => {
     if (data && !isAuthenticated) {
-      dispatch(login({ user: data.data }));
+      dispatch(login({ user: data }));
     }
     if (isError && isAuthenticated) {
       dispatch(logout());

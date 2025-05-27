@@ -1,15 +1,16 @@
 import "@web/styles/globals.css";
 import type { AppProps } from "next/app";
-import { Provider, useSelector } from "react-redux";
-import { RootState, store } from "../store";
+import { Provider } from "react-redux";
+import { store } from "../store";
 import { useRouter, usePathname } from "next/navigation";
 import { useEffect } from "react";
 import { GoogleOAuthProvider } from "@react-oauth/google";
+import { useAuth } from "../hooks/useAuth";
 
 const App = ({ Component, pageProps }: AppProps) => {
   const router = useRouter();
   const pathname = usePathname();
-  const { isAuthenticated } = useSelector((state: RootState) => state.auth);
+  const { isLoading, isAuthenticated } = useAuth();
 
   useEffect(() => {
     if (!isAuthenticated && pathname !== `/auth`) {
@@ -18,7 +19,12 @@ const App = ({ Component, pageProps }: AppProps) => {
     if (isAuthenticated && pathname === `/auth`) {
       router.push(`/`);
     }
-  }, [isAuthenticated, pathname, router]);
+  }, [pathname, router, isAuthenticated]);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
   return <Component {...pageProps} />;
 };
 

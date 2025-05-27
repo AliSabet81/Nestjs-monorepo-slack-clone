@@ -3,10 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../store";
 import { addChannel, setActiveChannel } from "../store/channels";
 import { logout } from "../store/auth";
+import { useLogoutMutation } from "../store/api";
 
 export const SideNav = () => {
   const [newChannel, setNewChannel] = useState(``);
   const dispatch = useDispatch();
+  const [logoutAuth] = useLogoutMutation();
 
   const { data: channels, activeChannelId } = useSelector(
     (state: RootState) => state.channels
@@ -17,8 +19,7 @@ export const SideNav = () => {
     if (!newChannel) {
       return;
     }
-    const test = dispatch(addChannel({ name: newChannel }));
-    console.log(`test`, test);
+    dispatch(addChannel({ name: newChannel }));
     setNewChannel(``);
   };
 
@@ -26,7 +27,8 @@ export const SideNav = () => {
     dispatch(setActiveChannel({ id }));
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    await logoutAuth(undefined);
     dispatch(logout());
   };
   return (

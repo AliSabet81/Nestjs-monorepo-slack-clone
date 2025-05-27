@@ -1,20 +1,20 @@
 import {
-  CallHandler,
-  ExecutionContext,
   Injectable,
   NestInterceptor,
+  ExecutionContext,
+  CallHandler,
 } from '@nestjs/common';
-import { map, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable()
 export class TransformResponseInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
-    // ... before route handler
     return next.handle().pipe(
       map((response) => {
         if (!response) {
           return {
-            data: null,
+            data: [],
           };
         }
         if (response.data && response.meta) {
@@ -23,9 +23,7 @@ export class TransformResponseInterceptor implements NestInterceptor {
             meta: response.meta,
           };
         }
-        return {
-          data: response,
-        };
+        return { data: response };
       }),
     );
   }
