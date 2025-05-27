@@ -17,6 +17,9 @@
     "db:migrate:test": "pnpm --filter backend db:migrate:test",
     "db:studio": "pnpm --filter backend db:studio"
   },
+  "prisma": {
+    "schema": "apps/backend/src/database/schema.prisma"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",

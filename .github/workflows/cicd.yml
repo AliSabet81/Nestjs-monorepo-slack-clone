@@ -1,0 +1,32 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/build
+      - name: Run unit tests
+        run: pnpm test
+      - name: Run e2e tests
+        run: pnpm test:e2e
+        env:
+          POSTGRES_USER: username
+          POSTGRES_PASSWORD: password
+
+  deploy:
+    needs: test
+    if: github.ref == 'refs/heads/master' && needs.test.result == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/build
+      - name: Apply database migrations
+        run: pnpx prisma migrate deploy
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
