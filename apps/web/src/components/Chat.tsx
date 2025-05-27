@@ -1,22 +1,17 @@
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "../store";
-import { addMessage } from "../store/messages";
 
-export const Chat = () => {
-  const dispatch = useDispatch();
-
-  const { data: channels, activeChannelId } = useSelector(
-    (state: RootState) => state.channels
-  );
-  const { data } = useSelector((state: RootState) => state.messages);
+export const Chat = ({ channelId }: { channelId: number }) => {
+  const { data: channels } = useSelector((state: RootState) => state.channels);
+  const channel = channels.find((channel) => channel.id === channelId);
   const { user } = useSelector((state: RootState) => state.auth);
-
-  const channel = channels.find((channel) => channel.id === activeChannelId);
-  const messages = data.filter(
-    (message) => message.channelId === activeChannelId
-  );
-  const [newMessage, setNewMessage] = useState<string>(``);
+  const { data } = useSelector((state: RootState) => state.messages);
+  const messages = data
+    .filter((message) => message.channelId === channelId)
+    .sort((a, b) => {
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+    });
 
   const colors = [
     "bg-blue-50",
@@ -27,14 +22,13 @@ export const Chat = () => {
   ];
   const getColor = (userId: number) => colors[userId % colors.length];
 
+  const [newMessage, setNewMessage] = useState<string>(``);
   const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!newMessage || !activeChannelId || !user) {
+    if (!newMessage || !user) {
       throw new Error(`Unable to send message`);
     }
-    dispatch(
-      addMessage({ content: newMessage, channelId: activeChannelId, user })
-    );
+
     setNewMessage(``);
   };
   return (

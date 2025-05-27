@@ -23,6 +23,7 @@
     "docker:start:test": "docker compose -f docker-compose-test.yml up -d",
     "docker:down:test": "docker compose -f docker-compose-test.yml down",
     "db:migrate:dev": "npx prisma migrate dev",
+    "db:migrate:reset": "pnpx prisma migrate reset",
     "db:migrate:test": "dotenv -e .env.test -- npx prisma migrate reset --force --skip-seed",
     "db:migrate:prod": "npx prisma migrate deploy",
     "db:generate": "npx prisma generate",

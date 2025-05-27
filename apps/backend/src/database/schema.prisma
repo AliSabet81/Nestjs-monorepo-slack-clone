@@ -16,4 +16,22 @@ model User {
   name      String    
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
+  messages  Message[]
+}
+model Channel {
+  id        Int       @id @default(autoincrement())
+  name      String    
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  messages  Message[]
+}
+model Message {
+  id        Int       @id @default(autoincrement())
+  content   String    
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  channel   Channel   @relation(fields: [channelId], references: [id])
+  channelId Int
+  user      User      @relation(fields: [userId], references: [id])
+  userId    Int
 }
